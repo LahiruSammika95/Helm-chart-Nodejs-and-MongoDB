@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+{{- include "example-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.deployment.api.replicas }}
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+{{- include "example-app.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.deployment.api.image }}
+          resources:
+            {{- toYaml .Values.deployment.api.resources | nindent 11 }}
+          ports:
+            - containerPort: 3000
+
+          env:
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: DB_URL
+
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
