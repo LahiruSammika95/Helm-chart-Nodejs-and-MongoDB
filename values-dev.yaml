@@ -1,6 +1,17 @@
 deployment:
+  env: development
   api:
     replicas: 3
+    image: sammika/api:8.0
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500Mi
+      requests:
+        cpu: 200m
+        memory: 500Mi
+  mongo:
+    replicas: 1
     env: development
     image: sammika/api:8.0
     resources:
@@ -21,7 +32,7 @@ configmap:
 
 secret:
   mongodb:
-    username: 
-    password: 
+    username: test
+    password: test
     # username: dXNlcm5hbWU=
     # password: cGFzc3dvcmQ=

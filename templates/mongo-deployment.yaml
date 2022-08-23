@@ -3,23 +3,22 @@ kind: Deployment
 metadata:
   name: mongodb
   labels:
-    app: mongodb
-    env: dev
+{{- include "example-app.mongoLabels" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas:  {{ .Values.deployment.mongo.replicas }}
   selector:
     matchLabels:
       app: mongodb
   template:
     metadata:
       labels:
-        app: mongodb
-        env: dev
+{{- include "example-app.mongoLabels" . | nindent 8 }}
     spec:
       containers:
         - name: mongodb
           image: mongo:latest
-
+          resources:
+            {{- toYaml .Values.deployment.mongo.resources | nindent 11 }}
           ports:
             - containerPort: 27017
           env:

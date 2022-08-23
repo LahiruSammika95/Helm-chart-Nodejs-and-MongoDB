@@ -1,5 +1,9 @@
-{{- define "example-app.labels" -}}
+{{- define "example-app.apiLabels" -}}
 app: api
-env: {{ .Values.deployment.api.env }}
+env: {{ .Values.deployment.env }}
 {{- end -}}
 
+{{- define "example-app.mongoLabels" -}}
+app: mongodb
+env: {{ .Values.deployment.env }}
+{{- end -}}
